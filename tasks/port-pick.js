@@ -144,7 +144,7 @@ module.exports = function(grunt) {
       return
     }
 
-    new Array('port', 'limit', 'extra', 'hostname', 'name').forEach(
+    new Array('port', 'limit', 'extra', 'hostname', 'name', 'random').forEach(
      function(prop) {
       if(newopts.hasOwnProperty(prop))
         pp.options[prop] = newopts[prop]
