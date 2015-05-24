@@ -13,6 +13,7 @@ module.exports = function(grunt) {
       , extra: 0
       , hostname: '0.0.0.0'
       , name: ''
+      , random: false
       }
     , url = require('url')
     , async = require('async')
@@ -74,7 +75,11 @@ module.exports = function(grunt) {
         }
       },
       function(callback){
-        portscanner.findAPortNotInUse(pp.first, pp.last, pp.options.hostname,
+        var firstPort = pp.first;
+        if(pp.options.random){
+          firstPort = pp.getRandomPort(pp.first, pp.last);
+        }
+        portscanner.findAPortNotInUse(firstPort, pp.last, pp.options.hostname,
           function(error, foundPort) {
             if(error && foundPort === false)
               grunt.fatal('An error occurred looking for a port - ' + error)
@@ -112,6 +117,10 @@ module.exports = function(grunt) {
 
     grunt.config.set(prop, newVal)
     grunt.log.writeln( '>> '.green + prop + '=' + newVal)
+  }
+
+  this.getRandomPort = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   //============================================================================
